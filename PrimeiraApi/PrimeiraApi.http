@@ -1,0 +1,9 @@
+﻿@PrimeiraApi_HostAddress = https://localhost:26353
+
+POST {{PrimeiraApi_HostAddress}}/
+  Hello Wrold!
+###
+
+GET {{PrimeiraApi_HostAddress}}/
+
+###
