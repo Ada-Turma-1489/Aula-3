@@ -1,4 +1,5 @@
-﻿using System.Threading.Channels;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading.Channels;
 
 namespace ExemplosLambdaExpression
 {
@@ -6,56 +7,34 @@ namespace ExemplosLambdaExpression
     {
         public delegate int Operacao(int numero1, int numero2);
 
-        static void Main(string[] args) // Entry Point
+        static void Main(string[] args) 
         {
-            Operacao variavel1 = Soma; // Qualquer coisa que retorne int e receba dois ints;
-            Operacao variavel2 = Subtracao; // Qualquer coisa que retorne int e receba dois ints;
 
-            // Executar a Soma
-            ExecutaOperacao(variavel1);
 
-            // Executar a Subtração
-            ExecutaOperacao(variavel2);
+            var lista = new List<int>() { 10, 5, 2, 1};
 
-            // Métodos Anônimos
-            ExecutaOperacao(delegate (int a, int b) // <- Método Sem Nome (inline)
+            //var resultado = lista.Aggregate(0, Soma);
+            //Console.WriteLine(resultado);
+
+            var resultado = lista.Aggregate(0, (int agregado, int itemDaLista) => 
             {
-                return a + b;
-            }); // Open Closed Principle 
-
-            // Lambda `entrada => saida`
-            ExecutaOperacao((int a, int b) => a + b);
-            ExecutaOperacao((int a, int b) => a - b);
-            ExecutaOperacao((int a, int b) => a / b);
-            ExecutaOperacao((int a, int b) => a * b);
-            ExecutaOperacao((int a, int b) => Math.Max(a, b));
-            ExecutaOperacao((int a, int b) => (int)Math.Pow(a, b));
-            ExecutaOperacao((int a, int b) => 
-            {
-                Console.WriteLine($"Executando o pow entre {a} e {b}");
-
-                var resultado = (int)Math.Pow(a, b);
-
-                Console.WriteLine($"O resultado é {resultado}");
+                Console.WriteLine($"Chamou a Lambda com os parâmetros {agregado} e {itemDaLista}");
+                var resultado = agregado + 2 * itemDaLista;
+                Console.WriteLine($"Resultado é {resultado}");
 
                 return resultado;
             });
-        }
- 
-        public static void ExecutaOperacao(Operacao operacao)
-        {
-            var resultado = operacao(7, 3);
-            Console.WriteLine($"O resultado da Operação é: {resultado}");
+
+            Console.WriteLine(resultado);
         }
 
-        // Assinatura do Método -> Tipo de Retorno, Parâmetros (ordem e os tipos)
-        // Retorna Int, Recebe dois Ints
         public static int Soma(int a, int b)
         {
+            Console.WriteLine($"Chamou a função Soma com os parâmetros {a} e {b}");
+            Console.WriteLine($"Resultado é {a+b}");
             return a + b;
         }
 
-        // Retorna Int, Recebe dois Ints
         public static int Subtracao(int a, int b)
         {
             return a - b;
